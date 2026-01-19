@@ -4,7 +4,7 @@ export default function HistoryView() {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    fetch("https:kk-dresses-backend.vercel.app/owner/sales-history")
+    fetch("https://kk-dresses-backend.vercel.app/owner/sales-history")
       .then(res => res.json())
       .then(setHistory);
   }, []);

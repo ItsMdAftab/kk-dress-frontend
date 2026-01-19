@@ -13,7 +13,7 @@ export default function Login() {
   const [error, setError] = useState("");
 
   const login = async () => {
-    const res = await fetch("https:kk-dresses-backend.vercel.app/login", {
+    const res = await fetch("https://kk-dresses-backend.vercel.app/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),

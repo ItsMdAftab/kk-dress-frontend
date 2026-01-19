@@ -8,7 +8,7 @@ export default function CategoryView() {
   const [range, setRange] = useState("today");
 
   useEffect(() => {
-    fetch(`https:kk-dresses-backend.vercel.app/owner/category-stats?range=${range}`)
+    fetch(`https://kk-dresses-backend.vercel.app/owner/category-stats?range=${range}`)
       .then(res => res.json())
       .then(setData);
   }, [range]);

@@ -6,7 +6,7 @@ export default function RegisterWorker() {
   const [msg, setMsg] = useState("");
 
   const register = async () => {
-    const res = await fetch("https:kk-dresses-backend.vercel.app/register-worker", {
+    const res = await fetch("https://kk-dresses-backend.vercel.app/register-worker", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),

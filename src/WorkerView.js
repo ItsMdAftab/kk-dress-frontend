@@ -5,7 +5,7 @@ export default function WorkerView() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("https:kk-dresses-backend.vercel.app/owner/worker-stats-full")
+    fetch("https://kk-dresses-backend.vercel.app/owner/worker-stats-full")
       .then(res => res.json())
       .then(setData);
   }, []);

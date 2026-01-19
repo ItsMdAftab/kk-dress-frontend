@@ -15,7 +15,7 @@ export default function OwnerDashboard() {
 
   useEffect(() => {
     if (view === "summary") {
-      fetch(`https:kk-dresses-backend.vercel.app
+      fetch(`https://kk-dresses-backend.vercel.app
 /owner/summary?range=${range}`)
         .then(res => res.json())
         .then(setSummary);
