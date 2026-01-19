@@ -28,7 +28,7 @@ export default function WorkerSale({ username = "worker1" }) {
       return;
     }
 
-    const res = await fetch("https://kk-dresses-backend.onrender.com/calculate-profit", {
+    const res = await fetch("https://kk-dresses-backend.vercel.app/calculate-profit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
