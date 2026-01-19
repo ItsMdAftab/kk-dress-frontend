@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/kk-dress-frontend/static/css/main.940dee72.css",
+    "main.js": "/kk-dress-frontend/static/js/main.7b6210bc.js",
+    "index.html": "/kk-dress-frontend/index.html",
+    "main.940dee72.css.map": "/kk-dress-frontend/static/css/main.940dee72.css.map",
+    "main.7b6210bc.js.map": "/kk-dress-frontend/static/js/main.7b6210bc.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.940dee72.css",
+    "static/js/main.7b6210bc.js"
+  ]
+}
