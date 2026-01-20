@@ -1,5 +1,7 @@
 import { useState } from "react";
 import LogoutButton from "./LogoutButton";
+import "./WorkerSale.css";
+import logo from "./assets/kk-dress-logo.png";
 
 // Categories with English + Telugu
 const categories = [
@@ -55,54 +57,58 @@ export default function WorkerSale({ username = "worker1" }) {
     }
   };
 
-  return (
-    <div style={styles.container}>
-      {/* HEADER ROW */}
-      <div style={styles.topBar}>
-        <h3 style={{ margin: 0 }}>
+return (
+  <div className="sale-wrapper">
+    <div className="sale-card">
+      {/* HEADER */}
+      <img src={logo} alt="KK Dresses Logo" className="sale-logo" />
+
+      <div className="sale-header">
+        <h3 className="sale-title">
           {language === "en" ? "New Sale" : "కొత్త అమ్మకం"}
         </h3>
-
-        {/* 🔴 LOGOUT BUTTON */}
+        
         <LogoutButton language={language} />
       </div>
 
-      {/* LANGUAGE TOGGLE */}
-      <div style={styles.langBox}>
+      {/* LANGUAGE */}
+      <div className="lang-toggle">
         <button
-          style={language === "en" ? styles.langActive : styles.langBtn}
+          className={`lang-btn ${language === "en" ? "active" : ""}`}
           onClick={() => setLanguage("en")}
         >
           English
         </button>
         <button
-          style={language === "te" ? styles.langActive : styles.langBtn}
+          className={`lang-btn ${language === "te" ? "active" : ""}`}
           onClick={() => setLanguage("te")}
         >
           తెలుగు
         </button>
       </div>
 
-      <p>{language === "en" ? "Select Category" : "వర్గాన్ని ఎంచుకోండి"}</p>
+      <p className="category-label">
+        {language === "en" ? "Select Category" : "వర్గాన్ని ఎంచుకోండి"}
+      </p>
 
-      <div style={styles.categoryBox}>
+      {/* CATEGORIES */}
+      <div className="category-box">
         {categories.map((cat) => (
           <button
             key={cat.en}
             onClick={() => setCategory(cat.en)}
-            style={{
-              ...styles.catBtn,
-              backgroundColor: category === cat.en ? "#000" : "#eee",
-              color: category === cat.en ? "#fff" : "#000",
-            }}
+            className={`category-btn ${
+              category === cat.en ? "active" : ""
+            }`}
           >
             {language === "en" ? cat.en : cat.te}
           </button>
         ))}
       </div>
 
+      {/* INPUTS */}
       <input
-        style={styles.input}
+        className="sale-input"
         placeholder={
           language === "en"
             ? "Secret Code (e.g. NOS)"
@@ -113,20 +119,22 @@ export default function WorkerSale({ username = "worker1" }) {
       />
 
       <input
-        style={styles.input}
+        className="sale-input"
         placeholder={language === "en" ? "Sold Price" : "అమ్మిన ధర"}
         type="number"
         value={soldPrice}
         onChange={(e) => setSoldPrice(e.target.value)}
       />
 
-      <button style={styles.submit} onClick={submitSale}>
+      <button className="sale-submit" onClick={submitSale}>
         {language === "en" ? "Submit Sale" : "అమ్మకం నమోదు చేయండి"}
       </button>
 
-      <p>{message}</p>
+      {message && <p className="sale-message">{message}</p>}
     </div>
-  );
+  </div>
+);
+
 }
 
 const styles = {

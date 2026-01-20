@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./Login.css";
 import WorkerSale from "./WorkerSale";
 import OwnerDashboard from "./OwnerDashboard";
+import logo from "./assets/kk-dress-logo.png";
 
 export default function Login() {
   // 🔽 RESTORE SESSION
@@ -45,7 +46,11 @@ export default function Login() {
   return (
     <div className="login-wrapper">
       <div className="login-card">
-        <h3 className="login-title">KK DRESSES</h3>
+        <img src={logo} alt="KK Dress Logo" className="login-logo" />
+<h1 className="brand-name">KK DRESSES</h1>
+<p className="brand-tagline">Fashion Shop</p>
+
+
 
         <input
           className="login-input"

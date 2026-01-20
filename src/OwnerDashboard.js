@@ -6,6 +6,7 @@ import "./chartConfig";
 import HistoryView from "./HistoryView";
 import RegisterWorker from "./RegisterWorker";
 import LogoutButton from "./LogoutButton";
+import logo from "./assets/kk-dress-logo.png";
 
 
 export default function OwnerDashboard() {
@@ -24,7 +25,10 @@ export default function OwnerDashboard() {
 
   return (
     <div className="container">
-      <div className="header">KK DRESSES — Owner</div>
+{/* LOGO */}
+<img src={logo} alt="KK Dresses Logo" className="dashboard-logo" />
+
+<div className="header">KK DRESSES — Owner</div>
 
       {/* VIEW BUTTONS */}
       <div className="tabs">
