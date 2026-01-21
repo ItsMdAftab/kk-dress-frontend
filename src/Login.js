@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Login.css";
 import WorkerSale from "./WorkerSale";
 import OwnerDashboard from "./OwnerDashboard";
-import logo from "./assets/kk-dress-logo.png";
+import logo from "./assets/KK.png";
+import SelectShop from "./SelectShop";
 
 /* =========================
    BUTTON LOADER
@@ -12,21 +13,44 @@ function ButtonLoader() {
 }
 
 export default function Login() {
-  // 🔽 RESTORE SESSION
-  const savedUser = JSON.parse(localStorage.getItem("user"));
-  const [role, setRole] = useState(savedUser?.role || null);
-  const [user, setUser] = useState(savedUser?.username || null);
+  /* =========================
+     CLEAR SESSION ON LOAD
+  ========================= */
+  useEffect(() => {
+    localStorage.removeItem("shop");
+    localStorage.removeItem("user");
+  }, []);
 
+  /* =========================
+     SHOP SELECTION STATE
+  ========================= */
+  const [shopSelected, setShopSelected] = useState(false);
+  const selectedShop = localStorage.getItem("shop");
+
+  /* =========================
+     USER SESSION STATE
+  ========================= */
+  const [role, setRole] = useState(null);
+  const [user, setUser] = useState(null);
+
+  /* =========================
+     LOGIN FORM STATE
+  ========================= */
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // ✅ added
+  const [loading, setLoading] = useState(false);
 
+  /* =========================
+     LOGIN FUNCTION
+  ========================= */
   const login = async () => {
-    if (loading) return; // prevent double click
+    if (loading) return;
 
     setError("");
-    setLoading(true); // start loading
+    setLoading(true);
+
+    const shop = localStorage.getItem("shop");
 
     try {
       const res = await fetch(
@@ -34,7 +58,11 @@ export default function Login() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({
+            username,
+            password,
+            shop,
+          }),
         }
       );
 
@@ -42,33 +70,53 @@ export default function Login() {
 
       if (!res.ok) {
         setError(data.error || "Login failed");
-        setLoading(false);
         return;
       }
 
+      // ✅ NORMALIZE USERNAME ONCE
+      const normalizedUsername = username.trim().toUpperCase();
+
+      // ✅ STORE USER SESSION
       localStorage.setItem(
         "user",
-        JSON.stringify({ role: data.role, username })
+        JSON.stringify({
+          role: data.role,
+          username: normalizedUsername,
+        })
       );
 
       setRole(data.role);
-      setUser(username);
-    } catch (err) {
+      setUser(normalizedUsername);
+    } catch {
       setError("Server not responding");
+    } finally {
       setLoading(false);
     }
   };
 
-  // 🔽 ROLE BASED ROUTING
-  if (role === "OWNER") return <OwnerDashboard />;
+  /* =========================
+     SHOP SELECTION PAGE
+  ========================= */
+  if (!shopSelected) {
+    return <SelectShop onSelect={() => setShopSelected(true)} />;
+  }
+
+  /* =========================
+     ROLE BASED ROUTING
+  ========================= */
+  if (role === "OWNER") return <OwnerDashboard username={user} />;
   if (role === "WORKER") return <WorkerSale username={user} />;
 
+  /* =========================
+     LOGIN UI
+  ========================= */
   return (
     <div className="login-wrapper">
       <div className="login-card">
-        <img src={logo} alt="KK Dress Logo" className="login-logo" />
-        <h1 className="brand-name">KK DRESSES</h1>
-        <p className="brand-tagline">Fashion Shop</p>
+        <img src={logo} alt="KK Group Logo" className="login-logo" />
+
+        <h1 className="brand-name">KK GROUP</h1>
+        <p className="brand-tagline">{selectedShop}</p>
 
         <input
           className="login-input"

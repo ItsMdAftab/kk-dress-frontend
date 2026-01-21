@@ -2,7 +2,12 @@
 
 .sale-wrapper {
   min-height: 100vh;
-  background: #f4f4f4;
+  background: linear-gradient(
+    18deg,
+    #002324,   /* deep blue */
+    #097909,   /* purple */
+    #02E15E    /* warm yellow */
+  );
   display: flex;
   justify-content: center;
   padding: 20px 10px;
@@ -10,7 +15,12 @@
 }
 
 .sale-card {
-  background: #ffffff;
+  background: linear-gradient(
+    18deg,
+    grey,   /* deep blue */
+    #097909,   /* purple */
+    #02E15E    /* warm yellow */
+  );
   width: 100%;
   max-width: 420px;
   padding: 20px;
@@ -72,7 +82,7 @@
   padding: 8px 14px;
   border-radius: 20px;
   border: none;
-  background: #eee;
+  background: #f4a940 ;
   font-size: 13px;
   cursor: pointer;
 }

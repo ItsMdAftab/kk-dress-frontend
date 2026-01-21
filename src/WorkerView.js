@@ -8,24 +8,28 @@ function Loader() {
   return <div className="loader"></div>;
 }
 
-export default function WorkerView() {
+export default function WorkerView({ username, range }) {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false); // ✅ added
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true); // start loading
+    if (!username) return;
 
-    fetch("https://kk-dresses-backend.vercel.app/owner/worker-stats-full")
-      .then(res => res.json())
-      .then(result => {
-        setData(result);
-        setLoading(false); // stop loading
+    setLoading(true);
+
+    fetch(
+      `https://kk-dresses-backend.vercel.app/owner/worker-stats-full?username=${username}&range=${range}`
+    )
+      .then((res) => res.json())
+      .then((result) => {
+        setData(result || []);
+        setLoading(false);
       })
       .catch(() => {
         setData([]);
-        setLoading(false); // stop loading even on error
+        setLoading(false);
       });
-  }, []);
+  }, [username, range]);
 
   return (
     <>
@@ -33,7 +37,13 @@ export default function WorkerView() {
 
       {/* LOADER */}
       {loading && (
-        <div style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            margin: "20px 0",
+          }}
+        >
           <Loader />
         </div>
       )}
@@ -41,21 +51,20 @@ export default function WorkerView() {
       {/* CHART */}
       {!loading && data.length > 0 && (
         <Bar
-          key="worker-chart"
           data={{
-            labels: data.map(d => d.sold_by),
+            labels: data.map((d) => d.sold_by),
             datasets: [
               {
                 label: "Sales Count",
-                data: data.map(d => d.count),
-                backgroundColor: "#000", // matches your black theme
+                data: data.map((d) => d.count),
+                backgroundColor: "#000",
               },
             ],
           }}
         />
       )}
 
-      {/* NO DATA MESSAGE */}
+      {/* NO DATA */}
       {!loading && data.length === 0 && (
         <p style={{ textAlign: "center", color: "#666" }}>
           No worker data available
@@ -64,7 +73,7 @@ export default function WorkerView() {
 
       {/* LIST */}
       {!loading &&
-        data.map(d => (
+        data.map((d) => (
           <p key={d.sold_by}>
             {d.sold_by}: {d.count} sales | Profit ₹{d.profit}
           </p>

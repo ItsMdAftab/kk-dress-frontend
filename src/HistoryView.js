@@ -7,14 +7,18 @@ function Loader() {
   return <div className="loader"></div>;
 }
 
-export default function HistoryView({ role = "owner" }) {
+export default function HistoryView({ role = "owner", username }) 
+{
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
 
   const fetchHistory = () => {
     setLoading(true);
-    fetch("https://kk-dresses-backend.vercel.app/owner/sales-history")
+    fetch(
+  `https://kk-dresses-backend.vercel.app/owner/sales-history?username=${username}`
+)
+
       .then(res => res.json())
       .then(data => {
         setHistory(data);
@@ -26,9 +30,9 @@ export default function HistoryView({ role = "owner" }) {
       });
   };
 
-  useEffect(() => {
-    fetchHistory();
-  }, []);
+ useEffect(() => {
+  fetchHistory();
+}, [username]);
 
   /* =========================
      DELETE SALE
@@ -42,9 +46,10 @@ export default function HistoryView({ role = "owner" }) {
 
     try {
       const res = await fetch(
-        `https://kk-dresses-backend.vercel.app/owner/delete-sale/${id}`,
-        { method: "DELETE" }
-      );
+  `https://kk-dresses-backend.vercel.app/owner/delete-sale/${id}?username=${username}`,
+  { method: "DELETE" }
+);
+
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
@@ -113,12 +118,13 @@ export default function HistoryView({ role = "owner" }) {
 ========================= */
 
 const card = {
-  background: "#fff",
+  background: "lightgreen",
   padding: 14,
   marginBottom: 12,
   borderRadius: 10,
-  boxShadow: "0 6px 14px rgba(0,0,0,0.08)",
+  boxShadow: "0 6px 14px rgba(0,0,0,0.18)", // ✅ FIXED
 };
+
 
 const category = {
   fontWeight: "bold",
@@ -135,13 +141,13 @@ const soldBy = {
 const secretCode = {
   fontSize: 13,
   fontWeight: "500",
-  color: "#0d6efd",
+  color: "blue",
   marginTop: 2,
 };
 
 const date = {
   fontSize: 12,
-  color: "gray",
+  color: "black",
   marginTop: 4,
 };
 

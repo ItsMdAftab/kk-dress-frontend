@@ -1,35 +1,81 @@
 /* ==========================
-   BASE
+   RESET
 ========================== */
-.container {
-  max-width: 420px;
-  margin: 0 auto;
-  min-height: 100vh;
-  padding: 18px 16px;
-  font-family: "Inter", "Segoe UI", sans-serif;
-  background: linear-gradient(180deg, #f6f7f9, #edf0f4);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* ==========================
-   TOP BAR
+   PAGE BASE
 ========================== */
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background: linear-gradient(
+    180deg,
+    #002324,   /* deep blue */
+    #097909,   /* purple */
+    #02E15E   /* warm yellow */
+  );
+
+}
+
+
+/* ==========================
+   APP ROOT
+========================== */
+
+
+
+/* ==========================
+   DASHBOARD CONTAINER
+   ✅ GRADIENT APPLIED HERE
+========================== */
+.container {
+  max-width: 420px;
+  width: 100%;
+  margin: 24px auto;
+  padding: 18px 16px;
+  min-height: calc(100vh - 48px);
+
+  background: linear-gradient(
+    18deg,
+    #002324,   /* deep blue */
+    #097909,   /* purple */
+    #02E15E    /* warm yellow */
+  );
+  border-radius: 22px;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+
 /* ==========================
    TOP BAR
 ========================== */
 .top-bar {
   position: relative;
   display: flex;
-  justify-content: flex-end; /* logout stays right */
+  justify-content: flex-end;
   align-items: center;
   height: 70px;
 }
 
-/* LOGO — CENTERED & BIGGER */
+/* LOGO */
 .dashboard-logo {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 110px;        /* 👈 bigger logo */
+  width: 110px;
 }
 
 /* LOGOUT */
@@ -70,85 +116,24 @@
   padding: 7px 18px;
   border-radius: 20px;
   border: none;
-  background: #e5e5e5;
+   background: linear-gradient(
+    180deg,
+       /* purple */
+    #f4a940    /* warm yellow */
+  );
   font-size: 13px;
   font-weight: 500;
   color: #333;
   cursor: pointer;
 }
 
-/* ACTIVE TAB */
 .tab.active {
   background: #000;
   color: #fff;
 }
 
 /* ==========================
-   CARDS
-========================== */
-.cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-top: 12px;
-}
-
-/* FULL WIDTH */
-.card.full {
-  grid-column: span 2;
-}
-
-/* CARD */
-.card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 16px;
-  position: relative;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
-}
-
-/* ICON (SUBTLE) */
-.card-icon {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  font-size: 18px;
-  opacity: 0.18;
-}
-
-/* TEXT */
-.card h3 {
-  font-size: 13px;
-  font-weight: 500;
-  color: #666;
-  margin: 0;
-}
-
-.card p {
-  margin-top: 8px;
-  font-size: 22px;
-  font-weight: 800;
-  color: #111;
-}
-
-/* ==========================
-   SMALL DEVICES
-========================== */
-@media (max-width: 360px) {
-  .cards {
-    grid-template-columns: 1fr;
-  }
-
-  .card.full {
-    grid-column: span 1;
-  }
-
-  .card p {
-    font-size: 20px;
-  }
-}
-/* ==========================
-   SECTION (LIKE CATEGORY TAB)
+   SECTION
 ========================== */
 .section {
   margin-top: 20px;
@@ -160,16 +145,104 @@
   font-weight: 600;
   color: #111;
   margin-bottom: 10px;
-  text-align: left;
   padding-left: 4px;
 }
 
-/* Summary Range Tabs */
 .range-tabs {
   justify-content: flex-start;
   gap: 12px;
   margin-bottom: 16px;
 }
+
+/* ==========================
+   CARDS GRID
+========================== */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.card.full {
+  grid-column: span 2;
+}
+
+/* ==========================
+   CARD BASE
+========================== */
+.card {
+  border-radius: 16px;
+  padding: 16px;
+  position: relative;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card-icon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 22px;
+  opacity: 0.25;
+}
+
+.card h3 {
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+}
+
+.card p {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: 0.4px;
+}
+
+/* ==========================
+   CARD COLORS
+========================== */
+
+/* Sales — Blue */
+.card-sales {
+  background: linear-gradient(180deg, #f3f8ff, #eaf2ff);
+  border: 1px solid #e2ecff;
+}
+
+/* Profit — Green */
+.card-profit {
+  background: linear-gradient(180deg, #f4fff7, #ebfff1);
+  border: 1px solid #dbf5e5;
+}
+
+/* Cash — Yellow */
+.card-cash {
+  background: linear-gradient(180deg, #fffdf2, #fff7d9);
+  border: 1px solid #f1e6b8;
+}
+
+/* Online — Purple */
+.card-online {
+  background: linear-gradient(180deg, #faf5ff, #f3ebff);
+  border: 1px solid #e4d6ff;
+}
+
+/* Total — Peach */
+.card-total {
+  background: linear-gradient(180deg, #fff5f5, #ffecec);
+  border: 1px solid #ffd6d6;
+}
+
+/* ==========================
+   LOADER
+========================== */
 .loader {
   width: 22px;
   height: 22px;
@@ -185,6 +258,10 @@
     transform: rotate(360deg);
   }
 }
+
+/* ==========================
+   ANIMATIONS
+========================== */
 .fade-in {
   animation: fadeIn 0.25s ease-in-out;
 }
@@ -197,5 +274,22 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* ==========================
+   MOBILE
+========================== */
+@media (max-width: 360px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card.full {
+    grid-column: span 1;
+  }
+
+  .card p {
+    font-size: 20px;
   }
 }

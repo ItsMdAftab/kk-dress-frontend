@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-export default function RegisterWorker() {
+export default function RegisterWorker({ ownerUsername }) {
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
@@ -9,7 +10,12 @@ export default function RegisterWorker() {
     const res = await fetch("https://kk-dresses-backend.vercel.app/register-worker", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+     body: JSON.stringify({
+  username,
+  password,
+  ownerUsername,
+}),
+
     });
 
     const data = await res.json();
