@@ -93,3 +93,20 @@
   color: #777;
   margin-bottom: 22px;
 }
+/* ==========================
+   BUTTON LOADER
+========================== */
+.btn-loader {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

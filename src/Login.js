@@ -4,6 +4,13 @@ import WorkerSale from "./WorkerSale";
 import OwnerDashboard from "./OwnerDashboard";
 import logo from "./assets/kk-dress-logo.png";
 
+/* =========================
+   BUTTON LOADER
+========================= */
+function ButtonLoader() {
+  return <span className="btn-loader"></span>;
+}
+
 export default function Login() {
   // 🔽 RESTORE SESSION
   const savedUser = JSON.parse(localStorage.getItem("user"));
@@ -13,30 +20,43 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // ✅ added
 
   const login = async () => {
+    if (loading) return; // prevent double click
+
     setError("");
+    setLoading(true); // start loading
 
-    const res = await fetch("https://kk-dresses-backend.vercel.app/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const res = await fetch(
+        "https://kk-dresses-backend.vercel.app/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      setError(data.error);
-      return;
+      if (!res.ok) {
+        setError(data.error || "Login failed");
+        setLoading(false);
+        return;
+      }
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ role: data.role, username })
+      );
+
+      setRole(data.role);
+      setUser(username);
+    } catch (err) {
+      setError("Server not responding");
+      setLoading(false);
     }
-
-    localStorage.setItem(
-      "user",
-      JSON.stringify({ role: data.role, username })
-    );
-
-    setRole(data.role);
-    setUser(username);
   };
 
   // 🔽 ROLE BASED ROUTING
@@ -47,16 +67,15 @@ export default function Login() {
     <div className="login-wrapper">
       <div className="login-card">
         <img src={logo} alt="KK Dress Logo" className="login-logo" />
-<h1 className="brand-name">KK DRESSES</h1>
-<p className="brand-tagline">Fashion Shop</p>
-
-
+        <h1 className="brand-name">KK DRESSES</h1>
+        <p className="brand-tagline">Fashion Shop</p>
 
         <input
           className="login-input"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          disabled={loading}
         />
 
         <input
@@ -65,13 +84,20 @@ export default function Login() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          disabled={loading}
         />
 
-        <button className="login-button" onClick={login}>
-          Login
+        <button
+          className="login-button"
+          onClick={login}
+          disabled={loading}
+        >
+          {loading ? <ButtonLoader /> : "Login"}
         </button>
 
-        {error && <p className="login-error">{error}</p>}
+        {error && !loading && (
+          <p className="login-error">{error}</p>
+        )}
       </div>
     </div>
   );

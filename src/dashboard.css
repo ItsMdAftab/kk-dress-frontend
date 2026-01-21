@@ -1,54 +1,72 @@
-/* ROOT CONTAINER */
-/* DASHBOARD LOGO */
-.dashboard-logo {
-  width: 90px;
-  display: block;
-  margin: 10px auto 6px auto;
-  opacity: 0.95;
-}
-
-/* HEADER TITLE */
-.header {
-  font-size: 18px;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 12px;
-}
-
+/* ==========================
+   BASE
+========================== */
 .container {
-  padding: 14px;
-  background: #fafafa;
+  max-width: 420px;
+  margin: 0 auto;
   min-height: 100vh;
-  font-family: Arial, sans-serif;
-  max-width: 420px;        /* ✅ mobile-first width */
-  margin: 0 auto;          /* center on desktop */
+  padding: 18px 16px;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #f6f7f9, #edf0f4);
 }
 
-/* HEADER */
+/* ==========================
+   TOP BAR
+========================== */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* LOGO */
+.dashboard-logo {
+  width: 64px;
+}
+
+/* LOGOUT */
+.logout-btn {
+  background: #ff3b30;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ==========================
+   HEADER
+========================== */
 .header {
-  font-size: 18px;         /* slightly smaller for mobile */
-  font-weight: bold;
-  margin-bottom: 12px;
-  text-align: center;      /* better mobile look */
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  margin: 14px 0 18px;
+  color: #111;
 }
 
-/* TABS (VIEW + RANGE) */
+/* ==========================
+   TABS
+========================== */
 .tabs {
   display: flex;
-  flex-wrap: wrap;         /* ✅ IMPORTANT */
-  gap: 8px;
-  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 14px;
 }
 
-/* TAB BUTTON */
 .tab {
-  padding: 6px 12px;
+  padding: 7px 18px;
   border-radius: 20px;
   border: none;
-  background: #e0e0e0;
+  background: #e5e5e5;
   font-size: 13px;
+  font-weight: 500;
+  color: #333;
   cursor: pointer;
-  white-space: nowrap;
 }
 
 /* ACTIVE TAB */
@@ -57,49 +75,119 @@
   color: #fff;
 }
 
-/* SUMMARY CARDS */
+/* ==========================
+   CARDS
+========================== */
 .cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+/* FULL WIDTH */
+.card.full {
+  grid-column: span 2;
 }
 
 /* CARD */
 .card {
-  background: #fff;
-  padding: 12px;
-  border-radius: 10px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  position: relative;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
 }
 
-/* CARD TITLE */
+/* ICON (SUBTLE) */
+.card-icon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 18px;
+  opacity: 0.18;
+}
+
+/* TEXT */
 .card h3 {
-  margin: 0;
   font-size: 13px;
-  color: gray;
-  font-weight: normal;
+  font-weight: 500;
+  color: #666;
+  margin: 0;
 }
 
-/* CARD VALUE */
 .card p {
-  font-size: 17px;
-  margin: 6px 0 0;
-  font-weight: bold;
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #111;
 }
 
-/* 🔽 SMALL MOBILE FIX (≤360px) */
+/* ==========================
+   SMALL DEVICES
+========================== */
 @media (max-width: 360px) {
-  .tab {
-    font-size: 12px;
-    padding: 6px 10px;
+  .cards {
+    grid-template-columns: 1fr;
   }
 
-  .cards {
-    grid-template-columns: 1fr;  /* stack cards */
+  .card.full {
+    grid-column: span 1;
   }
 
   .card p {
-    font-size: 16px;
+    font-size: 20px;
+  }
+}
+/* ==========================
+   SECTION (LIKE CATEGORY TAB)
+========================== */
+.section {
+  margin-top: 20px;
+  margin-bottom: 6px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 10px;
+  text-align: left;
+  padding-left: 4px;
+}
+
+/* Summary Range Tabs */
+.range-tabs {
+  justify-content: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.loader {
+  width: 22px;
+  height: 22px;
+  border: 3px solid #ddd;
+  border-top: 3px solid #000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-top: 6px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.fade-in {
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
