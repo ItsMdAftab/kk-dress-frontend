@@ -6,7 +6,8 @@ import "./chartConfig";
 import HistoryView from "./HistoryView";
 import RegisterWorker from "./RegisterWorker";
 import LogoutButton from "./LogoutButton";
-import logo from "./assets/kk-dress-logo.png";
+import logo from "./assets/KK.png";
+import WorkerSale from "./WorkerSale";
 
 /* =========================
    COUNT-UP ANIMATION HOOK
@@ -100,7 +101,7 @@ export default function OwnerDashboard() {
 
       {/* MAIN TABS */}
       <div className="tabs">
-        {["summary", "category", "workers", "history", "add-worker"].map(v => (
+        {[ "add-sale","summary", "category", "workers", "history", "add-worker"].map(v => (
           <button
             key={v}
             className={`tab ${view === v ? "active" : ""}`}
@@ -152,11 +153,17 @@ export default function OwnerDashboard() {
         </div>
       )}
 
-      {/* OTHER VIEWS */}
-      {view === "category" && <CategoryView />}
-      {view === "workers" && <WorkerView />}
-      {view === "history" && <HistoryView />}
-      {view === "add-worker" && <RegisterWorker />}
+    {view === "add-sale" && (
+  <WorkerSale
+    username="OWNER"
+    role="owner"
+  />
+)}
+
+{view === "category" && <CategoryView />}
+{view === "workers" && <WorkerView />}
+{view === "history" && <HistoryView role="owner" />}
+{view === "add-worker" && <RegisterWorker />}
 
     </div>
   );

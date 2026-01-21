@@ -13,15 +13,23 @@
 /* ==========================
    TOP BAR
 ========================== */
+/* ==========================
+   TOP BAR
+========================== */
 .top-bar {
+  position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* logout stays right */
   align-items: center;
+  height: 70px;
 }
 
-/* LOGO */
+/* LOGO — CENTERED & BIGGER */
 .dashboard-logo {
-  width: 64px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;        /* 👈 bigger logo */
 }
 
 /* LOGOUT */
