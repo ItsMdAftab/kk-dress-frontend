@@ -1,14 +1,15 @@
 {
   "files": {
-    "main.css": "/kk-dress-frontend/static/css/main.b126b195.css",
-    "main.js": "/kk-dress-frontend/static/js/main.4438044a.js",
+    "main.css": "/kk-dress-frontend/static/css/main.31796e16.css",
+    "main.js": "/kk-dress-frontend/static/js/main.aaa00163.js",
     "static/media/kk-dress-logo.png": "/kk-dress-frontend/static/media/kk-dress-logo.d430329e5ad7f19b8538.png",
+    "static/media/KK.png": "/kk-dress-frontend/static/media/KK.4aa9c655f1139ee3eb86.png",
     "index.html": "/kk-dress-frontend/index.html",
-    "main.b126b195.css.map": "/kk-dress-frontend/static/css/main.b126b195.css.map",
-    "main.4438044a.js.map": "/kk-dress-frontend/static/js/main.4438044a.js.map"
+    "main.31796e16.css.map": "/kk-dress-frontend/static/css/main.31796e16.css.map",
+    "main.aaa00163.js.map": "/kk-dress-frontend/static/js/main.aaa00163.js.map"
   },
   "entrypoints": [
-    "static/css/main.b126b195.css",
-    "static/js/main.4438044a.js"
+    "static/css/main.31796e16.css",
+    "static/js/main.aaa00163.js"
   ]
 }
