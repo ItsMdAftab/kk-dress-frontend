@@ -12,27 +12,31 @@ export default function HistoryView({ role = "owner", username })
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const [range, setRange] = useState("today");
 
-  const fetchHistory = () => {
-    setLoading(true);
-    fetch(
-  `https://kk-dresses-backend.vercel.app/owner/sales-history?username=${username}`
-)
 
-      .then(res => res.json())
-      .then(data => {
-        setHistory(data);
-        setLoading(false);
-      })
-      .catch(() => {
-        setHistory([]);
-        setLoading(false);
-      });
-  };
+ const fetchHistory = () => {
+  setLoading(true);
 
- useEffect(() => {
+  fetch(
+    `https://kk-dresses-backend.vercel.app/owner/sales-history?username=${username}&range=${range}`
+  )
+    .then(res => res.json())
+    .then(data => {
+      setHistory(data);
+      setLoading(false);
+    })
+    .catch(() => {
+      setHistory([]);
+      setLoading(false);
+    });
+};
+
+
+useEffect(() => {
   fetchHistory();
-}, [username]);
+}, [username, range]); // 👈 IMPORTANT
+
 
   /* =========================
      DELETE SALE
@@ -66,6 +70,36 @@ export default function HistoryView({ role = "owner", username })
   return (
     <>
       <h4>Sales History</h4>
+      <div style={{ display: "flex", gap: 10, marginBottom: 15 }}>
+  <button
+    onClick={() => setRange("today")}
+    style={{
+      padding: "6px 14px",
+      borderRadius: 6,
+      border: "none",
+      background: range === "today" ? "#198754" : "#ccc",
+      color: "#fff",
+      cursor: "pointer",
+    }}
+  >
+    Today
+  </button>
+
+  <button
+    onClick={() => setRange("yesterday")}
+    style={{
+      padding: "6px 14px",
+      borderRadius: 6,
+      border: "none",
+      background: range === "yesterday" ? "#198754" : "#ccc",
+      color: "#fff",
+      cursor: "pointer",
+    }}
+  >
+    Yesterday
+  </button>
+</div>
+
 
       {loading && (
         <div style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}>

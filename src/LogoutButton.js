@@ -8,7 +8,8 @@ export default function LogoutButton({ language = "en" }) {
     if (!window.confirm(confirmMsg)) return;
 
     localStorage.removeItem("user");
-    window.location.reload();
+  localStorage.removeItem("shop");
+  window.location.reload();
   };
 
   return (

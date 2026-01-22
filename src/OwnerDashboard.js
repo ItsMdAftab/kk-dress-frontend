@@ -52,6 +52,16 @@ function Loader() {
 export default function OwnerDashboard() {
   const [view, setView] = useState("summary");
   const [range, setRange] = useState("today");
+  const [selectedMonth, setSelectedMonth] = useState(
+  new Date().getMonth() + 1 // 1–12
+);
+const [selectedYear, setSelectedYear] = useState(
+  new Date().getFullYear()
+);
+
+const [fromDate, setFromDate] = useState("");
+const [toDate, setToDate] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   const [summary, setSummary] = useState({
@@ -74,9 +84,19 @@ export default function OwnerDashboard() {
 
     setLoading(true);
 
-    fetch(
-      `https://kk-dresses-backend.vercel.app/owner/summary?username=${username}&range=${range}`
-    )
+    let url =
+  `https://kk-dresses-backend.vercel.app/owner/summary?username=${username}&range=${range}`;
+
+if (range === "month") {
+  url += `&month=${selectedMonth}&year=${selectedYear}`;
+}
+
+if (range === "custom" && fromDate && toDate) {
+  url += `&from=${fromDate}&to=${toDate}`;
+}
+
+fetch(url)
+
       .then((res) => res.json())
       .then((data) => {
         setSummary({
@@ -98,7 +118,17 @@ export default function OwnerDashboard() {
         });
         setLoading(false);
       });
-  }, [view, range, username, isAuthorized]);
+  }, [
+  view,
+  range,
+  username,
+  isAuthorized,
+  selectedMonth,
+  selectedYear,
+  fromDate,
+  toDate,
+]);
+
 
   const animatedSales = useCountUp(summary.sales);
   const animatedProfit = useCountUp(summary.profit);
@@ -156,7 +186,8 @@ export default function OwnerDashboard() {
         <div className="section">
           <div className="section-title">Summary Range</div>
           <div className="tabs range-tabs">
-            {["today", "yesterday", "month", "year"].map(r => (
+            {["today", "yesterday", "month", "year", "custom"].map(r => (
+              
               <button
                 key={r}
                 className={`tab ${range === r ? "active" : ""}`}
@@ -166,6 +197,49 @@ export default function OwnerDashboard() {
               </button>
             ))}
           </div>
+          {view === "summary" && range === "month" && (
+  <div style={{ display: "flex", gap: 10, marginBottom: 15 }}>
+    <select
+      value={selectedMonth}
+      onChange={(e) => setSelectedMonth(Number(e.target.value))}
+    >
+      {[
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ].map((m, i) => (
+        <option key={i} value={i + 1}>
+          {m}
+        </option>
+      ))}
+    </select>
+
+    <select
+      value={selectedYear}
+      onChange={(e) => setSelectedYear(Number(e.target.value))}
+    >
+      {[ 2026,2027,2028].map((y) => (
+        <option key={y} value={y}>
+          {y}
+        </option>
+      ))}
+    </select>
+  </div>
+)}
+{view === "summary" && range === "custom" && (
+  <div style={{ display: "flex", gap: 10, marginBottom: 15 }}>
+    <input
+      type="date"
+      value={fromDate}
+      onChange={(e) => setFromDate(e.target.value)}
+    />
+    <input
+      type="date"
+      value={toDate}
+      onChange={(e) => setToDate(e.target.value)}
+    />
+  </div>
+)}
+
         </div>
       )}
 

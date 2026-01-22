@@ -132,22 +132,41 @@ export default function WorkerSale({ username, role = "worker" }) {
     setMessage("");
 
     try {
+      const preparedItems = sales.map(s => {
+  let cash = 0;
+  let online = 0;
+
+  if (s.paymentMode === "CASH") {
+    cash = Number(s.price);
+  } 
+  else if (s.paymentMode === "ONLINE") {
+    online = Number(s.price);
+  } 
+  else {
+    cash = Number(s.cashAmount || 0);
+    online = Number(s.onlineAmount || 0);
+  }
+
+  return {
+    category: s.category,
+    secretCode: s.code,
+    soldPrice: Number(s.price),
+    paymentMode: s.paymentMode,
+    cashAmount: cash,
+    onlineAmount: online
+  };
+});
+
       const res = await fetch(
         "https://kk-dresses-backend.vercel.app/calculate-profit/bulk",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({
+        body: JSON.stringify({
   soldBy: username,
-  items: sales.map(s => ({
-    category: s.category,
-    secretCode: s.code,
-    soldPrice: Number(s.price),
-    paymentMode: s.paymentMode,
-    cashAmount: Number(s.cashAmount || 0),
-    onlineAmount: Number(s.onlineAmount || 0)
-  }))
+  items: preparedItems
 })
+
 
 
         }

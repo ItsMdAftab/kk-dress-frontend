@@ -17,9 +17,15 @@ export default function Login() {
      CLEAR SESSION ON LOAD
   ========================= */
   useEffect(() => {
-    localStorage.removeItem("shop");
-    localStorage.removeItem("user");
-  }, []);
+  const savedUser = JSON.parse(localStorage.getItem("user"));
+  const savedShop = localStorage.getItem("shop");
+
+  if (savedUser && savedShop) {
+    setRole(savedUser.role);
+    setUser(savedUser.username);
+  }
+}, []);
+
 
   /* =========================
      SHOP SELECTION STATE

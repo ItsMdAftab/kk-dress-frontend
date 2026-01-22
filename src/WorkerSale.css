@@ -2,12 +2,7 @@
 
 .sale-wrapper {
   min-height: 100vh;
-  background: linear-gradient(
-    18deg,
-    #002324,   /* deep blue */
-    #097909,   /* purple */
-    #02E15E    /* warm yellow */
-  );
+ 
   display: flex;
   justify-content: center;
   padding: 20px 10px;
@@ -15,12 +10,7 @@
 }
 
 .sale-card {
-  background: linear-gradient(
-    18deg,
-    grey,   /* deep blue */
-    #097909,   /* purple */
-    #02E15E    /* warm yellow */
-  );
+  
   width: 100%;
   max-width: 420px;
   padding: 20px;
@@ -52,17 +42,28 @@
 .lang-btn {
   padding: 6px 12px;
   margin-left: 6px;
-  border-radius: 6px;
-  border: 1px solid #000;
-  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #C8A2C8;
+  background: #F2F7F2;
   cursor: pointer;
   font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  transition: all 0.25s ease;
+}
+
+.lang-btn:hover {
+  background: #C8A2C8;
+  color: #fff;
 }
 
 .lang-btn.active {
-  background: #000;
+  background: linear-gradient(135deg, #C8A2C8, #C2B97F);
   color: #fff;
+  border-color: #C2B97F;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
 }
+
 
 /* CATEGORY */
 .category-label {
@@ -79,17 +80,33 @@
 }
 
 .category-btn {
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: 20px;
-  border: none;
-  background: #f4a940 ;
+  border: 1px solid rgba(200, 162, 200, 0.6);
+  background: #c8a2c8;
   font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
+  color: #333;
+  transition: all 0.25s ease;
+}
+
+.category-btn:hover {
+  background: #C8A2C8;
+  color: #fff;
 }
 
 .category-btn.active {
-  background: #000;
+  background: linear-gradient(
+    135deg,
+    #C2B97F   /* gold */
+  );
   color: #fff;
+  border-color: #C2B97F;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.22),
+    0 0 0 2px rgba(194, 185, 127, 0.35);
 }
 
 /* INPUTS */

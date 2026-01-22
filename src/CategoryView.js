@@ -151,7 +151,7 @@ export default function CategoryView({ username }) {
   scales: {
     x: {
       ticks: {
-        color: "#ffffff",   // ✅ X-axis labels (Top, Other, etc.)
+        color: "grey",   // ✅ X-axis labels (Top, Other, etc.)
         font: {
           size: 13,
           weight: "bold",
@@ -163,7 +163,7 @@ export default function CategoryView({ username }) {
     },
     y: {
       ticks: {
-        color: "#ffffff",   // ✅ Y-axis ₹ values
+        color: "#black",   // ✅ Y-axis ₹ values
         font: {
           size: 13,
           weight: "bold",
