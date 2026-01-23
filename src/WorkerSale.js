@@ -157,20 +157,33 @@ export default function WorkerSale({ username, role = "worker" }) {
   };
 });
 
-      const res = await fetch(
-        "https://kk-dresses-backend.vercel.app/calculate-profit/bulk",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-  soldBy: username,
-  items: preparedItems
-})
+      const isSingle = preparedItems.length === 1;
 
+const url = isSingle
+  ? "https://kk-dresses-backend.vercel.app/calculate-profit"
+  : "https://kk-dresses-backend.vercel.app/calculate-profit/bulk";
 
+const payload = isSingle
+  ? {
+      soldBy: username,
+      category: preparedItems[0].category,
+      secretCode: preparedItems[0].secretCode,
+      soldPrice: preparedItems[0].soldPrice,
+      paymentMode: preparedItems[0].paymentMode,
+      cashAmount: preparedItems[0].cashAmount,
+      onlineAmount: preparedItems[0].onlineAmount,
+    }
+  : {
+      soldBy: username,
+      items: preparedItems,
+    };
 
-        }
-      );
+const res = await fetch(url, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload),
+});
+
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
