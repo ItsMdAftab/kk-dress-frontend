@@ -12,17 +12,30 @@ const categories = [
   { en: "Scarf", te: "స్కార్ఫ్" },
   { en: "Chunni", te: "చున్నీ" },
   { en: "Leggings", te: "లెగ్గింగ్స్" },
+  { en: "Ankles", te: "ఆంకిల్స్" },
+  { en: "Offer Tops", te: "ఆఫర్ టాప్స్" },
   { en: "Set's", te: "సెట్లు" },
   { en: "Other", te: "ఇతరాలు" }
 ];
 
-export default function WorkerSale({ username, role = "worker" }) {
-  
+/* =========================
+   FIXED CATEGORY RATES
+========================= */
+const categoryDefaults = {
+  Chunni: { code: "CK", price: 100 },
+  Scarf: { code: "AK", price: 100 },
+  Ankles: { code: "NAK", price: 250 },
+  Leggings: { code: "NIK", price: 200 },
+  "Offer Tops": { code: "SKK", price: 500 }
+};
+
+export default function WorkerSale({ username }) {
+
   const [language, setLanguage] = useState("en");
   const [count, setCount] = useState(1);
   const [sales, setSales] = useState([
     {
-      category: "",
+      category: "Other",
       code: "",
       price: "",
       paymentMode: "CASH",
@@ -39,15 +52,16 @@ export default function WorkerSale({ username, role = "worker" }) {
   useEffect(() => {
     setSales(prev => {
       const copy = [...prev];
-      while (copy.length < count)
+      while (copy.length < count) {
         copy.push({
-          category: "",
+          category: "Other",
           code: "",
           price: "",
           paymentMode: "CASH",
           cashAmount: "",
           onlineAmount: ""
         });
+      }
       return copy.slice(0, count);
     });
   }, [count]);
@@ -61,7 +75,31 @@ export default function WorkerSale({ username, role = "worker" }) {
   };
 
   /* =========================
-     HANDLE PAYMENT MODE
+     CATEGORY SELECT (AUTO FILL)
+  ========================= */
+  const selectCategory = (index, category) => {
+    const defaults = categoryDefaults[category];
+
+    setSales(s =>
+      s.map((item, i) =>
+        i === index
+          ? {
+              ...item,
+              category,
+              code: defaults ? defaults.code : "",
+              price: defaults ? defaults.price : "",
+              cashAmount:
+                item.paymentMode === "CASH" && defaults ? defaults.price : "",
+              onlineAmount:
+                item.paymentMode === "ONLINE" && defaults ? defaults.price : ""
+            }
+          : item
+      )
+    );
+  };
+
+  /* =========================
+     PAYMENT MODE
   ========================= */
   const setPaymentMode = (index, mode) => {
     setSales(s =>
@@ -73,7 +111,6 @@ export default function WorkerSale({ username, role = "worker" }) {
             ...item,
             paymentMode: "CASH",
             cashAmount: Number(item.price || 0),
-
             onlineAmount: 0
           };
         }
@@ -83,8 +120,7 @@ export default function WorkerSale({ username, role = "worker" }) {
             ...item,
             paymentMode: "ONLINE",
             cashAmount: 0,
-                onlineAmount: Number(item.price || 0)
-
+            onlineAmount: Number(item.price || 0)
           };
         }
 
@@ -114,18 +150,18 @@ export default function WorkerSale({ username, role = "worker" }) {
       }
 
       if (s.paymentMode === "SPLIT") {
-  const total =
-    Number(s.cashAmount || 0) + Number(s.onlineAmount || 0);
+        const total =
+          Number(s.cashAmount || 0) + Number(s.onlineAmount || 0);
 
-  if (total !== Number(s.price)) {
-    setMessage(
-      language === "en"
-        ? "Cash + Online must equal Sold Price"
-        : "నగదు + ఆన్‌లైన్ మొత్తం అమ్మిన ధరకు సమానం కావాలి"
-    );
-    return;
-  }
-}
+        if (total !== Number(s.price)) {
+          setMessage(
+            language === "en"
+              ? "Cash + Online must equal Sold Price"
+              : "నగదు + ఆన్‌లైన్ మొత్తం అమ్మిన ధరకు సమానం కావాలి"
+          );
+          return;
+        }
+      }
     }
 
     setLoading(true);
@@ -133,57 +169,41 @@ export default function WorkerSale({ username, role = "worker" }) {
 
     try {
       const preparedItems = sales.map(s => {
-  let cash = 0;
-  let online = 0;
+        let cash = 0;
+        let online = 0;
 
-  if (s.paymentMode === "CASH") {
-    cash = Number(s.price);
-  } 
-  else if (s.paymentMode === "ONLINE") {
-    online = Number(s.price);
-  } 
-  else {
-    cash = Number(s.cashAmount || 0);
-    online = Number(s.onlineAmount || 0);
-  }
+        if (s.paymentMode === "CASH") cash = Number(s.price);
+        else if (s.paymentMode === "ONLINE") online = Number(s.price);
+        else {
+          cash = Number(s.cashAmount || 0);
+          online = Number(s.onlineAmount || 0);
+        }
 
-  return {
-    category: s.category,
-    secretCode: s.code,
-    soldPrice: Number(s.price),
-    paymentMode: s.paymentMode,
-    cashAmount: cash,
-    onlineAmount: online
-  };
-});
+        return {
+          category: s.category,
+          secretCode: s.code,
+          soldPrice: Number(s.price),
+          paymentMode: s.paymentMode,
+          cashAmount: cash,
+          onlineAmount: online
+        };
+      });
 
       const isSingle = preparedItems.length === 1;
 
-const url = isSingle
-  ? "https://kk-dresses-backend.vercel.app/calculate-profit"
-  : "https://kk-dresses-backend.vercel.app/calculate-profit/bulk";
+      const url = isSingle
+        ? "https://kk-dresses-backend.vercel.app/calculate-profit"
+        : "https://kk-dresses-backend.vercel.app/calculate-profit/bulk";
 
-const payload = isSingle
-  ? {
-      soldBy: username,
-      category: preparedItems[0].category,
-      secretCode: preparedItems[0].secretCode,
-      soldPrice: preparedItems[0].soldPrice,
-      paymentMode: preparedItems[0].paymentMode,
-      cashAmount: preparedItems[0].cashAmount,
-      onlineAmount: preparedItems[0].onlineAmount,
-    }
-  : {
-      soldBy: username,
-      items: preparedItems,
-    };
+      const payload = isSingle
+        ? { soldBy: username, ...preparedItems[0] }
+        : { soldBy: username, items: preparedItems };
 
-const res = await fetch(url, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(payload),
-});
-
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
@@ -195,13 +215,14 @@ const res = await fetch(url, {
 
       setCount(1);
       setSales([{
-        category: "",
+        category: "Other",
         code: "",
         price: "",
         paymentMode: "CASH",
         cashAmount: "",
         onlineAmount: ""
       }]);
+
     } catch (err) {
       setMessage(err.message);
     } finally {
@@ -214,45 +235,45 @@ const res = await fetch(url, {
       <div className="sale-card">
 
         <img src={logo} alt="KK Dresses Logo" className="sale-logo" />
-        <p
-  style={{
-    textAlign: "center",
-    fontSize: 13,
-    fontWeight: 600,
-    marginTop: 4,
-    color: "gold",
-  }}
->
-  {localStorage.getItem("shop")}
-</p>
 
+        <p style={{
+          textAlign: "center",
+          fontSize: 13,
+          fontWeight: 600,
+          marginTop: 4,
+          color: "gold"
+        }}>
+          {localStorage.getItem("shop")}
+        </p>
 
-        <div
-  className="sale-header"
-  style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
->
-  <h3 className="sale-title">
-    {language === "en" ? "New Sale" : "కొత్త అమ్మకం"}
-  </h3>
+        <div className="sale-header" style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}>
+          <h3 className="sale-title">
+            {language === "en" ? "New Sale" : "కొత్త అమ్మకం"}
+          </h3>
 
-  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-    <span style={{ fontSize: 14, fontWeight: 600 }}>
-      {username}
-    </span>
-    <LogoutButton language={language} />
-  </div>
-</div>
-
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ fontSize: 14, fontWeight: 600 }}>{username}</span>
+            <LogoutButton language={language} />
+          </div>
+        </div>
 
         <div className="lang-toggle">
           <button
             className={`lang-btn ${language === "en" ? "active" : ""}`}
             onClick={() => setLanguage("en")}
-          >English</button>
+          >
+            English
+          </button>
           <button
             className={`lang-btn ${language === "te" ? "active" : ""}`}
             onClick={() => setLanguage("te")}
-          >తెలుగు</button>
+          >
+            తెలుగు
+          </button>
         </div>
 
         <p className="category-label">
@@ -264,7 +285,7 @@ const res = await fetch(url, {
           value={count}
           onChange={e => setCount(Number(e.target.value))}
         >
-          {[1,2,3,4,5].map(n => (
+          {[1, 2, 3, 4, 5].map(n => (
             <option key={n} value={n}>{n}</option>
           ))}
         </select>
@@ -279,7 +300,7 @@ const res = await fetch(url, {
                 <button
                   key={cat.en}
                   className={`category-btn ${sale.category === cat.en ? "active" : ""}`}
-                  onClick={() => updateSale(index, "category", cat.en)}
+                  onClick={() => selectCategory(index, cat.en)}
                 >
                   {language === "en" ? cat.en : cat.te}
                 </button>
@@ -301,7 +322,6 @@ const res = await fetch(url, {
               onChange={e => updateSale(index, "price", e.target.value)}
             />
 
-            {/* PAYMENT MODE */}
             <p className="category-label">Payment Mode</p>
             <div className="category-box">
               {["CASH", "ONLINE", "SPLIT"].map(mode => (
