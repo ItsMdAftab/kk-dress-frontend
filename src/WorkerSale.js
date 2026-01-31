@@ -26,7 +26,7 @@ const categoryDefaults = {
   Scarf: { code: "AK", price: 100 },
   Ankles: { code: "NAK", price: 250 },
   Leggings: { code: "NIK", price: 200 },
-  "Offer Tops": { code: "SKK", price: 500 }
+  "Offer Tops": { code: "SSK", price: 500 }
 };
 
 export default function WorkerSale({ username }) {
